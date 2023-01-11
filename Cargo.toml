@@ -1,0 +1,17 @@
+[package]
+name = "bonk-streamer"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+borsh = "0.9.3"
+dotenv = "0.15.0"
+flexi_logger = "0.24.2"
+gstreamer = "0.19.5"
+image = "0.24.5"
+log = "0.4.17"
+simple_logger = "4.0.0"
+solana-client = "1.14.12"
+solana-program = "1.14.12"
