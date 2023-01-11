@@ -1,4 +1,3 @@
-use image;
 use solana_client::rpc_client::RpcClient;
 use solana_program::pubkey::Pubkey;
 
@@ -17,7 +16,7 @@ pub fn save_bonk_board(
 ) -> Result<()> {
     image::save_buffer(
         Path::new(image_file_path),
-        &BoardData::fetch(&client, board_data_account)?.data,
+        &BoardData::fetch(client, board_data_account)?.data,
         BOARD_SIZE as u32,
         BOARD_SIZE as u32,
         image::ColorType::Rgb8,
@@ -31,7 +30,7 @@ pub fn check_last_updated(
     board_account: &Pubkey,
     local_last_updated: Option<i64>,
 ) -> Result<Option<i64>> {
-    let on_chain_last_updated = Board::fetch(&client, board_account)?.last_updated;
+    let on_chain_last_updated = Board::fetch(client, board_account)?.last_updated;
 
     Ok(
         if local_last_updated.is_none() || on_chain_last_updated > local_last_updated.unwrap() {

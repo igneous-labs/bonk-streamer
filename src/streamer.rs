@@ -14,10 +14,7 @@ pub enum Message {
     Quit,
 }
 
-pub fn spawn_streamer(
-    rx: Receiver<Message>,
-    config: Config,
-) -> JoinHandle<()> {
+pub fn spawn_streamer(rx: Receiver<Message>, config: Config) -> JoinHandle<()> {
     let pipeline_str: String = format!(
         "uridecodebin uri=file://{0} \
             ! videoscale \

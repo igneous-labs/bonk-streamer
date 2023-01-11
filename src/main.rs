@@ -1,4 +1,3 @@
-use flexi_logger;
 use log::{debug, info, warn};
 use solana_client::rpc_client::RpcClient;
 
@@ -37,8 +36,8 @@ fn main() {
                     "board was updated at {}, fetching BoardData ...",
                     last_updated
                 );
-                if let Ok(_) =
-                    save_bonk_board(&client, &config.board_data_account, &config.image_file_path)
+                if save_bonk_board(&client, &config.board_data_account, &config.image_file_path)
+                    .is_ok()
                 {
                     local_last_updated = Some(last_updated);
                     tx.send(Message::Update).expect("failed to send message");
