@@ -1,5 +1,6 @@
 use image;
 use solana_client::rpc_client::RpcClient;
+use solana_program::pubkey::Pubkey;
 
 use std::path::Path;
 
@@ -11,7 +12,7 @@ use crate::{
 
 pub fn save_bonk_board(
     client: &RpcClient,
-    board_data_account: &str,
+    board_data_account: &Pubkey,
     image_file_path: &str,
 ) -> Result<()> {
     image::save_buffer(
@@ -27,7 +28,7 @@ pub fn save_bonk_board(
 
 pub fn check_last_updated(
     client: &RpcClient,
-    board_account: &str,
+    board_account: &Pubkey,
     local_last_updated: Option<i64>,
 ) -> Result<Option<i64>> {
     let on_chain_last_updated = Board::fetch(&client, board_account)?.last_updated;

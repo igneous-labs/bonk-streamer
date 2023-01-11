@@ -6,6 +6,8 @@ use std::{
     thread::{self, JoinHandle},
 };
 
+use crate::config::Config;
+
 #[allow(dead_code)]
 pub enum Message {
     Update,
@@ -14,26 +16,27 @@ pub enum Message {
 
 pub fn spawn_streamer(
     rx: Receiver<Message>,
-    image_file_path: &str,
-    rtmp_endpoint: &str,
-    frame_rate: &str,
-    stream_width: &str,
-    stream_height: &str,
-    bit_rate: &str,
+    config: Config,
 ) -> JoinHandle<()> {
     let pipeline_str: String = format!(
-        "uridecodebin uri=file://{image_file_path} \
+        "uridecodebin uri=file://{0} \
             ! videoscale \
             ! imagefreeze \
             ! videoconvert
-            ! video/x-raw, framerate={frame_rate}, format=NV12, width={stream_width}, height={stream_height}
+            ! video/x-raw, framerate={1}, format=NV12, width={2}, height={3}
             ! queue
-            ! x264enc threads=0 bitrate={bit_rate} tune=zerolatency key-int-max=30
+            ! x264enc threads=0 bitrate={4} tune=zerolatency key-int-max=30
             ! h264parse
             ! queue
             ! flvmux name=flvmux
             ! queue
-            ! rtmpsink location=rtmp://{rtmp_endpoint}"
+            ! rtmpsink location=rtmp://{5}",
+        config.image_file_path,
+        config.frame_rate,
+        config.stream_width,
+        config.stream_height,
+        config.bit_rate,
+        config.rtmp_endpoint,
     );
 
     thread::spawn(move || {

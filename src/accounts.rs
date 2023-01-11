@@ -8,11 +8,11 @@ pub trait Fetch
 where
     Self: Sized,
 {
-    fn get_account_data(client: &RpcClient, pubkey: &str) -> Result<Vec<u8>> {
-        Ok(client.get_account(&Pubkey::try_from(pubkey)?)?.data)
+    fn get_account_data(client: &RpcClient, pubkey: &Pubkey) -> Result<Vec<u8>> {
+        Ok(client.get_account(pubkey)?.data)
     }
 
-    fn fetch(client: &RpcClient, pubkey: &str) -> Result<Self>;
+    fn fetch(client: &RpcClient, pubkey: &Pubkey) -> Result<Self>;
 }
 
 #[derive(BorshDeserialize, Debug)]
@@ -24,7 +24,7 @@ pub struct Board {
 }
 
 impl Fetch for Board {
-    fn fetch(client: &RpcClient, pubkey: &str) -> Result<Self> {
+    fn fetch(client: &RpcClient, pubkey: &Pubkey) -> Result<Self> {
         Self::try_from_slice(&Self::get_account_data(client, pubkey)?).map_err(|e| e.into())
     }
 }
@@ -39,7 +39,7 @@ pub struct BoardData {
 }
 
 impl Fetch for BoardData {
-    fn fetch(client: &RpcClient, pubkey: &str) -> Result<Self> {
+    fn fetch(client: &RpcClient, pubkey: &Pubkey) -> Result<Self> {
         let data = Self::get_account_data(client, pubkey)?;
 
         Ok(Self {
