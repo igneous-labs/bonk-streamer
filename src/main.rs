@@ -3,17 +3,7 @@ use solana_client::rpc_client::RpcClient;
 
 use std::{sync::mpsc, thread, time::Duration};
 
-mod accounts;
-mod config;
-mod consts;
-mod streamer;
-mod utils;
-
-use config::*;
-use streamer::*;
-use utils::*;
-
-type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+use bonk_streamer::{config::*, streamer::*, utils::*};
 
 fn main() {
     flexi_logger::Logger::try_with_env_or_str("info")
